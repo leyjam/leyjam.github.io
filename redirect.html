@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Redirigiendo...</title>
+<script>
+window.onload = function() {
+    let params = new URLSearchParams(window.location.search);
+    let url = params.get("go");
+    if (url) {
+        window.location.href = url;
+    }
+};
+</script>
+</head>
+<body style="background:#000; color:white; text-align:center; padding-top:50px;">
+Redirigiendo...
+</body>
+</html>
