@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Redirigiendo...</title>
-  <script>
-    window.onload = function() {
-      const params = new URLSearchParams(window.location.search);
-      const url = params.get("u");
-      if(url) {
-        window.location.href = url; // redirige directo al link original
-      } else {
-        document.body.innerHTML = "<h2>No se encontró ningún link para redirigir.</h2>";
-      }
-    };
-  </script>
+<meta charset="UTF-8">
+<title>Redirigiendo...</title>
+<script>
+async function redirect() {
+  const params = new URLSearchParams(window.location.search);
+  const alias = params.get("alias");
+  if (!alias) { document.body.innerHTML = "Alias no encontrado"; return; }
+
+  const response = await fetch('links.json');
+  const links = await response.json();
+  const url = links[alias];
+
+  if (!url) { document.body.innerHTML = "Link no encontrado"; return; }
+
+  // Redirigir directo
+  window.location.href = url;
+}
+window.onload = redirect;
+</script>
 </head>
 <body>
-  <h2>Redirigiendo...</h2>
+<p>Redirigiendo...</p>
 </body>
 </html>

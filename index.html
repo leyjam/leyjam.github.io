@@ -1,36 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Acortador Leyjam</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-    input, button { padding: 10px; margin: 10px; width: 300px; }
-    a { display: block; margin-top: 20px; color: blue; font-weight: bold; }
-  </style>
+<meta charset="UTF-8">
+<title>Acortador Leyjam</title>
+<link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-  <h1>Acortador Leyjam</h1>
-  <input id="longUrl" type="text" placeholder="Pega aquí el link largo">
-  <br>
-  <input id="alias" type="text" placeholder="Pon aquí tu alias">
-  <br>
-  <button onclick="acortar()">Acortar</button>
-  <div id="resultado"></div>
+  <div class="container">
+    <h1>Acortador Leyjam</h1>
+    <input id="longUrl" type="text" placeholder="Pega aquí el link largo">
+    <input id="alias" type="text" placeholder="Pon tu alias">
+    <button onclick="acortar()">Acortar</button>
+    <div id="resultado"></div>
+  </div>
 
-  <script>
-    function acortar() {
-      const siteDomain = "https://leyjam.github.io"; // tu dominio de GitHub Pages
-      const longUrl = document.getElementById("longUrl").value.trim();
-      const alias = document.getElementById("alias").value.trim();
+<script>
+async function acortar() {
+  const longUrl = document.getElementById("longUrl").value.trim();
+  const alias = document.getElementById("alias").value.trim();
+  if (!longUrl || !alias) { alert("Debes poner link y alias"); return; }
 
-      if(!longUrl) { alert("Debes poner un link"); return; }
+  // Cargar links existentes
+  const response = await fetch('links.json');
+  const links = await response.json();
 
-      const shortLink = `${siteDomain}/redirect.html?u=${encodeURIComponent(longUrl)}&alias=${encodeURIComponent(alias)}`;
+  if (links[alias]) { alert("Este alias ya existe"); return; }
 
-      const resultadoDiv = document.getElementById("resultado");
-      resultadoDiv.innerHTML = `<a href="${shortLink}" target="_blank">${shortLink}</a>`;
-    }
-  </script>
+  // Guardar nuevo link (actualizar JSON manualmente después en GitHub)
+  links[alias] = longUrl;
+  // Nota: GitHub Pages no permite modificar JSON directo desde el navegador
+  // Para actualizar nuevos links, subes links.json modificado al repositorio
+
+  const shortLink = `https://leyjam.github.io/redirect.html?alias=${encodeURIComponent(alias)}`;
+  document.getElementById("resultado").innerHTML = `<a href="${shortLink}" target="_blank">${shortLink}</a>`;
+}
+</script>
 </body>
 </html>
