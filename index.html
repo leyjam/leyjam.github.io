@@ -1,89 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Leyjam Link Pro</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #0d0d0d;
-        color: white;
-        padding: 20px;
-    }
-    .box {
-        background: #1a1a1a;
-        padding: 20px;
-        border-radius: 10px;
-        max-width: 500px;
-        margin: auto;
-    }
-    input, button {
-        width: 100%;
-        padding: 12px;
-        margin: 10px 0;
-        border-radius: 6px;
-        border: none;
-    }
-    input {
-        background: #333;
-        color: white;
-    }
-    button {
-        background: #00aaff;
-        color: white;
-        cursor: pointer;
-        font-size: 16px;
-    }
-    .link-result {
-        margin-top: 15px;
-        padding: 15px;
-        background: #262626;
-        border-radius: 6px;
-        word-break: break-all;
-    }
-</style>
+  <meta charset="UTF-8">
+  <title>Acortador Leyjam</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+    input, button { padding: 10px; margin: 10px; width: 300px; }
+    a { display: block; margin-top: 20px; color: blue; font-weight: bold; }
+  </style>
 </head>
 <body>
+  <h1>Acortador Leyjam</h1>
+  <input id="longUrl" type="text" placeholder="Pega aquí el link largo">
+  <br>
+  <input id="alias" type="text" placeholder="Pon aquí tu alias">
+  <br>
+  <button onclick="acortar()">Acortar</button>
+  <div id="resultado"></div>
 
-<div class="box">
-    <h2>LEYJAM LINK PRO</h2>
+  <script>
+    function acortar() {
+      const siteDomain = "https://leyjam.github.io"; // tu dominio de GitHub Pages
+      const longUrl = document.getElementById("longUrl").value.trim();
+      const alias = document.getElementById("alias").value.trim();
 
-    <label>Nombre base (lo que tú quieras mostrar):</label>
-    <input id="base" placeholder="Ej: www.leyjam.com">
+      if(!longUrl) { alert("Debes poner un link"); return; }
 
-    <label>Alias personalizado:</label>
-    <input id="alias" placeholder="Ej: mascueros">
+      const shortLink = `${siteDomain}/redirect.html?u=${encodeURIComponent(longUrl)}&alias=${encodeURIComponent(alias)}`;
 
-    <label>Enlace original:</label>
-    <input id="url" placeholder="Pega aquí tu link">
-
-    <button onclick="crearLink()">Crear enlace corto</button>
-
-    <div id="resultado" class="link-result" style="display:none;"></div>
-</div>
-
-<script>
-function crearLink() {
-    let base = document.getElementById("base").value.trim();
-    let alias = document.getElementById("alias").value.trim();
-    let url = document.getElementById("url").value.trim();
-
-    if (!base || !alias || !url) {
-        alert("Completa todos los campos");
-        return;
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = `<a href="${shortLink}" target="_blank">${shortLink}</a>`;
     }
-
-    let linkVisual = base + "/" + alias;
-    let linkReal = "redirect.html?go=" + encodeURIComponent(url);
-
-    document.getElementById("resultado").style.display = "block";
-    document.getElementById("resultado").innerHTML =
-        "<b>Tu enlace:</b><br>" +
-        "<span style='color:#00ccff'>" + linkVisual + "</span><br><br>" +
-        "Este es el enlace REAL que funciona:<br>" +
-        "<span style='color:#ffcc00'>" + linkReal + "</span>";
-}
-</script>
-
+  </script>
 </body>
 </html>
